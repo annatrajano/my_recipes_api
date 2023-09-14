@@ -14,8 +14,8 @@ app = OpenAPI(__name__, info=info)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path(basedir, 'db.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Init db
 db = SQLAlchemy(app)
@@ -25,7 +25,7 @@ ma = Marshmallow(app)
 
 # Recipe Class/Model
 class Recipe(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), unique=True)
     typ = db.Column(db.String(140))
     ingredients = db.Column(db.String(500))
@@ -44,8 +44,8 @@ class RecipeSchema(ma.Schema):
         
         
 #Init Schema
-recipe_schema = RecipeSchema(strict=True)
-recipes_schema = RecipeSchema(many=True, strict=True)
+recipe_schema = RecipeSchema
+recipes_schema = RecipeSchema(many=True)
 
 @app.get('/', tags=[home_tag])
 def home():
@@ -55,6 +55,7 @@ def home():
 
 
 # Run Server
-
+with app.app_context():
+    db.create_all()
 if __name__ == '__main__':
     app.run(debug=True)
