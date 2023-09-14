@@ -38,6 +38,14 @@ class Recipe(db.Model):
         self.description = description
 
 # Recipe Schema
+class RecipeSchema(ma.Schema):
+    class Meta:
+        fields:('id', 'name', 'typ', 'ingredients', 'description')
+        
+        
+#Init Schema
+recipe_schema = RecipeSchema(strict=True)
+recipes_schema = RecipeSchema(many=True, strict=True)
 
 @app.get('/', tags=[home_tag])
 def home():
