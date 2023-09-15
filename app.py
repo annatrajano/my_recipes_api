@@ -94,6 +94,26 @@ def add_recipe():
         db.session.commit()
         return create_response(201, "recipe", new_recipe.to_json(), "Recipe created successfully")
     except Exception as e:
+        print('Error', e)
+        return create_response(400, "recipe", {}, "Error")
+    
+# Update Recipe By Id
+@app.route('/recipe/<id>', methods=['PUT'])
+def update_recipe(id):
+    recipe_obj = Recipe.query.filter_by(id=id).first()
+    body = request.get_json()
+    try:
+        if('name', 'typ', 'ingredients', 'description' in body):
+            recipe_obj.name=body['name']
+            recipe_obj.typ=body['typ']
+            recipe_obj.ingredients=body['ingredients']
+            recipe_obj.description=body['description']
+            
+            db.session.add(recipe_obj)
+            db.session.commit()
+        return create_response(200, "recipe", recipe_obj.to_json(), "Recipe updated successfully")
+    except Exception as e:
+        print('Error', e)
         return create_response(400, "recipe", {}, "Error")
 
 # Delete a Recipe
