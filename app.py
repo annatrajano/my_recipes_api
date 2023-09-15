@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, jsonify, redirect, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_openapi3 import OpenAPI, Info, Tag
+import json
 import os
 
 # Init app
@@ -24,28 +25,31 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 # Recipe Class/Model
+
+
 class Recipe(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     typ = db.Column(db.String(140))
     ingredients = db.Column(db.String(500))
     description = db.Column(db.String(500))
-    
-    def __init__(self, name, typ, ingredients, description):
-        self.name = name
-        self.typ = typ
-        self.ingredients = ingredients
-        self.description = description
+
+    def to_json(self):
+        return {"id":self.id, "name":self.name, "typ":self.typ, "ingredients":self.ingredients, "description":self.description}
+
 
 # Recipe Schema
+
+
 class RecipeSchema(ma.Schema):
     class Meta:
-        fields:('id', 'name', 'typ', 'ingredients', 'description')
-        
-        
-#Init Schema
+        fields: ('id', 'name', 'typ', 'ingredients', 'description')
+
+
+# Init Schema
 recipe_schema = RecipeSchema
 recipes_schema = RecipeSchema(many=True)
+
 
 @app.get('/', tags=[home_tag])
 def home():
@@ -53,6 +57,26 @@ def home():
     """
     return redirect('/openapi')
 
+# Create a Recipe
+@app.route('/recipe',  methods=['POST'])
+def add_recipe():
+    name = request.json['name']
+    typ = request.json['typ']
+    ingredients = request.json['ingredients']
+    description = request.json['description']
+
+    new_recipe = Recipe(name, typ, ingredients, description)
+    db.session.add(new_recipe)
+    db.session.commit()
+    
+    return recipe_schema.jsonify(new_recipe)
+
+# Get All Recipes
+@app.route('/recipes', methods=['GET'])
+def get_recipes():
+    recipes_obj = Recipe.query.all()
+    recipes_json = [recipe.to_json() for recipe in recipes_obj]
+    return Response(json.dumps(recipes_json))
 
 # Run Server
 with app.app_context():
