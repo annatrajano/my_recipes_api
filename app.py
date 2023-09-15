@@ -57,26 +57,44 @@ def home():
     """
     return redirect('/openapi')
 
-# Create a Recipe
-@app.route('/recipe',  methods=['POST'])
-def add_recipe():
-    name = request.json['name']
-    typ = request.json['typ']
-    ingredients = request.json['ingredients']
-    description = request.json['description']
-
-    new_recipe = Recipe(name, typ, ingredients, description)
-    db.session.add(new_recipe)
-    db.session.commit()
+# Create Response
+def create_response(status, content_name, content, message=False):
+    body={}
+    body[content_name] = content
     
-    return recipe_schema.jsonify(new_recipe)
+    if(message):
+        body["message"] = message
+    
+    return Response(json.dumps(body), status=status, mimetype="appication/json")
+
 
 # Get All Recipes
 @app.route('/recipes', methods=['GET'])
 def get_recipes():
     recipes_obj = Recipe.query.all()
     recipes_json = [recipe.to_json() for recipe in recipes_obj]
-    return Response(json.dumps(recipes_json))
+    return create_response(200, "recipes", recipes_json, "ok")
+
+# Get Recipe By Id
+@app.route('/recipe/<id>', methods=['GET'])
+def get_recipe(id):
+    recipe_obj = Recipe.query.filter_by(id=id).first()
+    recipe_json = recipe_obj.to_json()
+    return create_response(200, "recipe", recipe_json, "ok")
+
+# Create a Recipe
+@app.route('/recipe',  methods=['POST'])
+def add_recipe():
+    body = request.get_json()
+    
+    try:
+        new_recipe = Recipe(name=body["name"], typ=body["typ"], ingredients=body["ingredients"], description=body["description"])
+        db.session.add(new_recipe)
+        db.session.commit()
+        return create_response(201, "recipe", new_recipe.to_json(), "Recipe created successfully")
+    except Exception as e:
+        return create_response(400, "recipe", {}, "Error")
+    
 
 # Run Server
 with app.app_context():
