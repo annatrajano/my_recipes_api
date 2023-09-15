@@ -104,7 +104,7 @@ def delete_recipe(id):
     try:
         db.session.delete(recipe_obj)
         db.session.commit()
-        return create_response(201, "recipe", recipe_obj.to_json(), "Recipe deleted successfully")
+        return create_response(200, "recipe", recipe_obj.to_json(), "Recipe deleted successfully")
     except Exception as e:
         return create_response(400, "recipe", {}, "Error")
 
