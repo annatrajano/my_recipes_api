@@ -35,7 +35,7 @@ class Recipe(db.Model):
     description = db.Column(db.String(500))
 
     def to_json(self):
-        return {"id":self.id, "name":self.name, "typ":self.typ, "ingredients":self.ingredients, "description":self.description}
+        return {"id": self.id, "name": self.name, "typ": self.typ, "ingredients": self.ingredients, "description": self.description}
 
 
 # Recipe Schema
@@ -59,12 +59,12 @@ def home():
 
 # Create Response
 def create_response(status, content_name, content, message=False):
-    body={}
+    body = {}
     body[content_name] = content
-    
-    if(message):
+
+    if (message):
         body["message"] = message
-    
+
     return Response(json.dumps(body), status=status, mimetype="appication/json")
 
 
@@ -86,15 +86,28 @@ def get_recipe(id):
 @app.route('/recipe',  methods=['POST'])
 def add_recipe():
     body = request.get_json()
-    
+
     try:
-        new_recipe = Recipe(name=body["name"], typ=body["typ"], ingredients=body["ingredients"], description=body["description"])
+        new_recipe = Recipe(name=body["name"], typ=body["typ"],
+                            ingredients=body["ingredients"], description=body["description"])
         db.session.add(new_recipe)
         db.session.commit()
         return create_response(201, "recipe", new_recipe.to_json(), "Recipe created successfully")
     except Exception as e:
         return create_response(400, "recipe", {}, "Error")
+
+# Delete a Recipe
+@app.route('/recipe/<id>', methods=['DELETE'])
+def delete_recipe(id):
+    recipe_obj = Recipe.query.filter_by(id=id).first()
     
+    try:
+        db.session.delete(recipe_obj)
+        db.session.commit()
+        return create_response(201, "recipe", recipe_obj.to_json(), "Recipe deleted successfully")
+    except Exception as e:
+        return create_response(400, "recipe", {}, "Error")
+
 
 # Run Server
 with app.app_context():
