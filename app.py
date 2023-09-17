@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, redirect, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_openapi3 import OpenAPI, Info, Tag
+from flask_cors import CORS
 import json
 import os
 
@@ -12,6 +13,7 @@ recipe_tag = Tag(
     name="Recipe", description="Add, view and delete recipes from the base")
 info = Info(title="My Recipes API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
+CORS(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Database
