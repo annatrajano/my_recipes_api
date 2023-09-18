@@ -1,0 +1,304 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "My Recipes - OpenAPI 1.0",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "annagarcia@id.uff.br"
+    },
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "tags": [
+    {
+      "name": "recipe",
+      "description": "Add, update, get and delete recipes!"
+    }
+  ],
+  "paths": {
+    "/recipe": {
+      "post": {
+        "tags": [
+          "recipe"
+        ],
+        "summary": "Add a new recipe",
+        "operationId": "addRecipe",
+        "requestBody": {
+          "description": "Create a new recipe",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": [
+          "recipe"
+        ],
+        "summary": "Returns all recipes",
+        "description": "Returns all recipes",
+        "operationId": " getRecipes",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Recipe"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Recipe"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recipes not found"
+          }
+        }
+      }
+    },
+    "/recipe/{recipeId}": {
+      "get": {
+        "tags": [
+          "recipe"
+        ],
+        "summary": "Find recipe by ID",
+        "description": "Returns a single recipe",
+        "operationId": "getRecipeById",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "ID of recipe to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Recipe not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "recipe"
+        ],
+        "summary": "Update a recipe",
+        "description": "",
+        "operationId": "updateRecipe",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "Id of recipe that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent recipe",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Recipe"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Recipe"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "recipe"
+        ],
+        "summary": "Deletes a recipe",
+        "description": "delete a recipe",
+        "operationId": "deleteRecipe",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "Recipe id to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid recipe value"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Recipe": {
+        "required": [
+          "name",
+          "typ",
+          "ingredients",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "lasagna"
+          },
+          "typ": {
+            "type": "string",
+            "example": "pasta"
+          },
+          "ingredients": {
+            "type": "string",
+            "example": "1 pound sweet Italian sausage, ¾ pound lean ground beef, ½ cup minced onion"
+          },
+          "description": {
+            "type": "string",
+            "example": "The assembled lasagna should take about 50 minutes to cook in an oven preheated to 375 degrees F. Cover it with foil for the first 25 minutes, then let it cook uncovered for the final 25 minutes. Also, it's important to let the lasagna rest at room temperature for about 15 minutes before you cut into it."
+          }
+        },
+        "xml": {
+          "name": "recipe"
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "##default"
+        }
+      }
+    },
+    "requestBodies": {
+      "Recipe": {
+        "description": "Pet object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Recipe"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Recipe"
+            }
+          }
+        }
+      }
+    }
+  }
+}
