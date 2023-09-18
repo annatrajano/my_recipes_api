@@ -176,7 +176,8 @@
                 "$ref": "#/components/schemas/Recipe"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -225,6 +226,9 @@
           }
         ],
         "responses": {
+          "default": {
+            "description": "successful operation"
+          },
           "400": {
             "description": "Invalid recipe value"
           }
