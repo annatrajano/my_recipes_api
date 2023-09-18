@@ -2,19 +2,38 @@ from flask import Flask, request, jsonify, redirect, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_openapi3 import OpenAPI, Info, Tag
+from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 import json
 import os
 
 # Init app
-# tags
-home_tag = Tag(name="Documentation", description="Swagger, Redoc ou RapiDoc")
-recipe_tag = Tag(
-    name="Recipe", description="Add, view and delete recipes from the base")
-info = Info(title="My Recipes API", version="1.0.0")
-app = OpenAPI(__name__, info=info)
+app = Flask(__name__)
 CORS(app)
-basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Swagger UI config
+SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = '/static/swagger.json'  # Our API url (can of course be a local resource)
+
+# Call factory function to create our blueprint
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "Test application"
+    },
+    # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
+    #    'clientId': "your-client-id",
+    #    'clientSecret': "your-client-secret-if-required",
+    #    'realm': "your-realms",
+    #    'appName': "your-app-name",
+    #    'scopeSeparator': " ",
+    #    'additionalQueryStringParams': {'test': "hello"}
+    # }
+)
+
+app.register_blueprint(swaggerui_blueprint)
+
 
 # Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
@@ -27,8 +46,6 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 # Recipe Class/Model
-
-
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
@@ -41,8 +58,6 @@ class Recipe(db.Model):
 
 
 # Recipe Schema
-
-
 class RecipeSchema(ma.Schema):
     class Meta:
         fields: ('id', 'name', 'typ', 'ingredients', 'description')
@@ -53,11 +68,11 @@ recipe_schema = RecipeSchema
 recipes_schema = RecipeSchema(many=True)
 
 
-@app.get('/', tags=[home_tag])
+@app.get('/')
 def home():
     """Redirect to /openapi.
     """
-    return redirect('/openapi')
+    return redirect('/api/docs')
 
 # Create Response
 def create_response(status, content_name, content, message=False):
