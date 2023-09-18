@@ -1,11 +1,9 @@
-from flask import Flask, request, jsonify, redirect, Response
+from flask import Flask, request, redirect, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from flask_openapi3 import OpenAPI, Info, Tag
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 import json
-import os
 
 # Init app
 app = Flask(__name__)
