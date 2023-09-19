@@ -38,7 +38,7 @@ Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal
 2. Entre no diretório que acabou de criar e depois clone o projeto:
 ```javascript
   cd projetos
-  git clone git@github.com:annabiatrajano/my_recipes_api.git
+  git clone git@github.com:annatrajano/my_recipes_api.git
 ```
 
 3. Acesse o diretório do projeto e depois utilize o comando **pip install -r requirements.txt** para instalar todas as libs necessárias ( já com a virtualenv ativada ):
