@@ -61,4 +61,22 @@ Neste projeto, desenvolvi as seguintes habilidades:
 
  - Estruturar uma API em Flask;
  - Fazer um CRUD;
- - Montar a documentação da API em Swagger;
+ - Montar a documentação da API em Swagger.
+   
+ ## Referências
+ [Flask](https://flask.palletsprojects.com/en/2.3.x/quickstart/)<br>
+ [Flask- SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/)<br>
+ [Flask-Swagger UI](https://pypi.org/project/flask-swagger-ui/)<br>
+ [Add Swagger to Flask API project with OpenAPI](https://youtu.be/ayn-I9sV7BU?si=RrfgAj4AvCWNN79t)<br>
+ [Documentando sua API com SWAGGER](https://youtu.be/BsREFvacsgw?si=2Qv3d1KvYVMCK6Ug)<br>
+ [CRUD COMPLETO FLASK com SQLALCHEMY em Python](https://youtu.be/WDpPGFkI9UU?si=C4Tk1tkjb3DuV4Yw)<br>
+ [REST API With Flask & SQL Alchemy](https://youtu.be/PTZiDnuC86g?si=B9vZyOJZG77yFsR5)<br>
+ [Conventional Commits](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)<br>
+
+
+## Escopo do Projeto
+
+ - Modelar o banco de dados;
+ - Estruturar as rotas;
+ - Gerar as respostas a partir de cada requisição;
+ - Implementar a documentação em Swagger.
