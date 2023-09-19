@@ -18,7 +18,7 @@ Get Recipes           |  Get Recipe By Id
 :-------------------------:|:-------------------------:
 ![Screeshot](./public/images/get.png)  |  ![Screenshot](./public/images/getById.png)
 
-Update Recipe          |  Delete Recipe
+Update Recipe By Id         |  Delete Recipe By Id
 :-------------------------:|:-------------------------:
 ![Screeshot](./public/images/put.png)  |  ![Screenshot](./public/images/delete.png)
 
