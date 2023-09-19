@@ -47,7 +47,7 @@ Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal
   (env)$ pip install -r requirements.txt
 ```
 
-4. Para executar a API  basta executar:
+4. Para executar a API  basta digitar:
 
 ```javascript
   (env)$ flask run --host 0.0.0.0 --port 5000 --reload
