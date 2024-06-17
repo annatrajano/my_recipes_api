@@ -54,7 +54,6 @@ Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal
 ```
 5. Por último, abra o [http://localhost:5000/](http://localhost:5000/) no navegador para verificar o status da API em execução.
 
-e 
 ## Como executar através do Docker
  
 Certifique-se de ter o Docker instalado e em execução em sua máquina.
