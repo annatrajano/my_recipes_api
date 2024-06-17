@@ -4,7 +4,7 @@ Este projeto contém os requisitos realizados por _[Anna Beatriz Garcia Trajano 
 
 Neste projeto desenvolvi uma api de receitas, utilizando Flask.
 
-Nele será possível ver, criar, filtar e deletar receitas (por id)!
+Nele será possível ver, criar, filtar e deletar receitas!
 
 Veja o exemplo a seguir das rotas criadas.
 
