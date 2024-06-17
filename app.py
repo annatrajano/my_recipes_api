@@ -1,9 +1,10 @@
 from flask import Flask, request, redirect, Response
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 import json
+
+from models.recipe import db, Recipe
+from schemas.recipe import ma, recipe_schema, recipes_schema
 
 # Init app
 app = Flask(__name__)
@@ -37,33 +38,10 @@ app.register_blueprint(swaggerui_blueprint)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Init db
-db = SQLAlchemy(app)
 
-# Init ma
-ma = Marshmallow(app)
-
-# Recipe Class/Model
-class Recipe(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True)
-    typ = db.Column(db.String(140))
-    ingredients = db.Column(db.String(500))
-    description = db.Column(db.String(500))
-
-    def to_json(self):
-        return {"id": self.id, "name": self.name, "typ": self.typ, "ingredients": self.ingredients, "description": self.description}
-
-
-# Recipe Schema
-class RecipeSchema(ma.Schema):
-    class Meta:
-        fields: ('id', 'name', 'typ', 'ingredients', 'description')
-
-
-# Init Schema
-recipe_schema = RecipeSchema
-recipes_schema = RecipeSchema(many=True)
+# Init db and ma
+db.init_app(app)
+ma.init_app(app)
 
 
 @app.get('/')
@@ -94,6 +72,8 @@ def get_recipes():
 @app.route('/recipe/<id>', methods=['GET'])
 def get_recipe(id):
     recipe_obj = Recipe.query.filter_by(id=id).first()
+    if not recipe_obj:
+        return create_response(404, "recipe", {}, "Recipe not found")
     recipe_json = recipe_obj.to_json()
     return create_response(200, "recipe", recipe_json, "ok")
 
@@ -116,17 +96,22 @@ def add_recipe():
 @app.route('/recipe/<id>', methods=['PUT'])
 def update_recipe(id):
     recipe_obj = Recipe.query.filter_by(id=id).first()
+    if not recipe_obj:
+        return create_response(404, "recipe", {}, "Recipe not found")
+    
     body = request.get_json()
     try:
-        if('name', 'typ', 'ingredients', 'description' in body):
-            recipe_obj.name=body['name']
-            recipe_obj.typ=body['typ']
-            recipe_obj.ingredients=body['ingredients']
-            recipe_obj.description=body['description']
+        if all(key in body for key in ('name', 'typ', 'ingredients', 'description')):
+            recipe_obj.name = body['name']
+            recipe_obj.typ = body['typ']
+            recipe_obj.ingredients = body['ingredients']
+            recipe_obj.description = body['description']
             
             db.session.add(recipe_obj)
             db.session.commit()
-        return create_response(200, "recipe", recipe_obj.to_json(), "Recipe updated successfully")
+            return create_response(200, "recipe", recipe_obj.to_json(), "Recipe updated successfully")
+        else:
+            return create_response(400, "recipe", {}, "Missing fields in request body")
     except Exception as e:
         print('Error', e)
         return create_response(400, "recipe", {}, "Error")
@@ -135,12 +120,15 @@ def update_recipe(id):
 @app.route('/recipe/<id>', methods=['DELETE'])
 def delete_recipe(id):
     recipe_obj = Recipe.query.filter_by(id=id).first()
+    if not recipe_obj:
+        return create_response(404, "recipe", {}, "Recipe not found")
     
     try:
         db.session.delete(recipe_obj)
         db.session.commit()
         return create_response(200, "recipe", recipe_obj.to_json(), "Recipe deleted successfully")
     except Exception as e:
+        print('Error', e)
         return create_response(400, "recipe", {}, "Error")
 
 
