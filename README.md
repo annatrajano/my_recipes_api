@@ -54,12 +54,12 @@ Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal
 ```
 5. Por último, abra o [http://localhost:5000/](http://localhost:5000/) no navegador para verificar o status da API em execução.
 
-
+e 
 ## Como executar através do Docker
  
 Certifique-se de ter o Docker instalado e em execução em sua máquina.
 
-Navegue até o diretório que contém o arquivo **docker-compose.yml** o **requirements.txt no terminal**. Execute **como administrador** o seguinte comando para construir a imagem Docker e subir o container:
+Navegue até o diretório que contém o arquivo **docker-compose.yml** e o **requirements.txt no terminal**. Execute, **como administrador**, o seguinte comando para construir a imagem Docker e subir o container:
 
 ```javascript
   docker compose up -d
