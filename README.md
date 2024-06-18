@@ -25,7 +25,7 @@ Update Recipe By Id         |  Delete Recipe By Id
 
 ## Instalação do projeto localmente:
  
-Após cada um dos passos, haverá um exemplo do comando a ser digitado para fazer o que está sendo pedido, caso tenha dificuldades e o exemplo não seja suficiente, não hesite em me contatar em _annagarcia@id.uff.br_.
+Após cada um dos passos, haverá um exemplo do comando a ser digitado para fazer o que está sendo pedido, caso tenha dificuldades e o exemplo não seja suficiente, não hesite em me contatar em _annatrajano95@gmail.com_.
 Será necessário ter todas as libs python listadas no `requirements.txt` instaladas.
 
 Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal, para poder executar os comandos descritos abaixo.
