@@ -1,10 +1,12 @@
-Este projeto contém os requisitos realizados por _[Anna Beatriz Garcia Trajano de Sá](www.linkedin.com/in/anna-beatriz-trajano-de-sá)_ enquanto cursava o curso de Pós-Graduação da PUC-RIO em Engenharia de Software. Ele engloba as disciplinas estudadas na primeira sprint (Desenvolvimento Full Stack Básico) e na quarta sprint (Arquitetura de Software) corresponde à parte Back-end da aplicação.
+Este projeto contém os requisitos realizados por _[Anna Beatriz Garcia Trajano de Sá](www.linkedin.com/in/anna-beatriz-trajano-de-sá)_ enquanto cursava o curso de Pós-Graduação da PUC-RIO em Engenharia de Software. Ele engloba as disciplinas estudadas na primeira sprint (Desenvolvimento Full Stack Básico) e na quarta sprint (Arquitetura de Software) 
+
+Esse repositório corresponde à parte Back-end da aplicação.
 
 # My Recipes API
 
 Neste projeto desenvolvi uma api de receitas, utilizando Flask.
 
-Nele será possível ver, criar, filtar e deletar receitas!
+Nele será possível ver, criar, atualizar, filtrar e deletar receitas!
 
 Veja o exemplo a seguir das rotas criadas.
 
@@ -58,7 +60,7 @@ Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal
  
 Certifique-se de ter o Docker instalado e em execução em sua máquina.
 
-Navegue até o diretório que contém o arquivo **docker-compose.yml** e o **requirements.txt no terminal**. Execute, **como administrador**, o seguinte comando para construir a imagem Docker e subir o container:
+Navegue até o diretório que contém o arquivo **docker-compose.yml** e o **requirements.txt**. Execute, **como administrador**, o seguinte comando para construir a imagem Docker e subir o container:
 
 ```javascript
   docker compose up -d
